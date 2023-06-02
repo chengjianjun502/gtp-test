@@ -35,30 +35,32 @@ function handleClick() {
 </template>
 
 <style lang="less">
-    .home-layout {
-        height: 100%;
-        display: block;
-        .content{
-            background: #04aa7c;
-            color: #fff;
-            font-size: 2rem;
-            height: 100%;
-            padding-top: 5rem;
-            position: static;
-        }
-    }
+.home-layout {
+  height: 100%;
+  display: block;
+  .content {
+    background: #04aa7c;
+    color: #fff;
+    font-size: 2rem;
+    height: 100%;
+    padding-top: 5rem;
+    position: static;
+  }
+}
 
-    .text-content{
-          text-align: center;
-        svg{
-            display: inline;
-        }
-    }
+.text-content {
+  text-align: center;
+  svg {
+    display: inline;
+  }
+}
 
-    .button-content{
-        text-align: center;
-        position: absolute;
-        bottom: 15rem;
-        width: 100%;
-    }
+.button-content {
+  text-align: center;
+  position: absolute;
+  bottom: 15rem;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
 </style>
