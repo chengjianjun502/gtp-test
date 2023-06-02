@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { NButton, NLayout, NLayoutContent } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/store'
+// import { useAppStore } from '@/store'
 
 const router = useRouter()
 
-const appStore = useAppStore()
+// const appStore = useAppStore()
 
 function handleClick() {
   // this.$router.push('/chat')
