@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type { Ref } from 'vue'
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { NAutoComplete, NButton, NInput, useDialog, useMessage } from 'naive-ui'
@@ -18,7 +18,7 @@ import { WS } from '@/utils/websocket'
 
 let controller = new AbortController()
 
-const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
+// const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
 
 const route = useRoute()
 const dialog = useDialog()
@@ -26,13 +26,12 @@ const ms = useMessage()
 const chatStore = useChatStore()
 
 const { isMobile } = useBasicLayout()
-const { addChat, updateChat, updateChatSome, getChatByUuidAndIndex } = useChat()
+const { addChat, updateChat, updateChatSome } = useChat()
 const { scrollRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll()
 const { usingContext, toggleUsingContext } = useUsingContext()
 
 const { uuid } = route.params as { uuid: string }
-const chatType = chatStore.getChatHistoryByCurrentActive?.type
-const MessageList: any[] = reactive([])
+const chatType = chatStore.getChatHistoryByCurrentActive?.type as string
 const dataSources = computed(() => chatStore.getChatByUuid(+uuid))
 const conversationList = computed(() =>
   dataSources.value.filter(
@@ -57,7 +56,7 @@ dataSources.value.forEach((item, index) => {
 })
 // 建立连接
 const ws = new WS(
-  'chat.code72.cn/',
+  import.meta.env.VITE_APP_API_WS_URL,
   `websocket/${uuid}/${chatType}`,
   () => {},
   WSOnMessage,
@@ -72,6 +71,7 @@ function WSOnMessage(ws: WS, ev: MessageEvent): any {
       inversion: false,
       error: false,
       loading: true,
+      chatType,
       conversationOptions: {
         // conversationId: data.conversationId,
         // parentMessageId: data.id
@@ -120,6 +120,7 @@ async function onConversation() {
     text: message,
     inversion: true,
     error: false,
+    chatType,
     conversationOptions: null,
     requestOptions: { prompt: message, options: { ...options } },
   })
@@ -130,6 +131,7 @@ async function onConversation() {
     loading: true,
     inversion: false,
     error: false,
+    chatType,
     conversationOptions: null,
     requestOptions: { prompt: message, options: { ...options } },
   })
@@ -160,6 +162,7 @@ async function onRegenerate(index: number) {
     inversion: false,
     error: false,
     loading: true,
+    chatType,
     conversationOptions: null,
     requestOptions: { prompt: message, options: { ...options } },
   })
@@ -344,7 +347,7 @@ onUnmounted(() => {
           </template>
           <template v-else>
             <div>
-              <Message v-for="(item, index) of dataSources" :key="index" :date-time="item.dateTime" :text="item.text" :inversion="item.inversion" :error="item.error" :loading="item.loading" @regenerate="onRegenerate(index)" @delete="handleDelete(index)" />
+              <Message v-for="(item, index) of dataSources" :key="index" :date-time="item.dateTime" :chat-type="item.chatType" :text="item.text" :inversion="item.inversion" :error="item.error" :loading="item.loading" @regenerate="onRegenerate(index)" @delete="handleDelete(index)" />
               <div class="sticky bottom-0 left-0 flex justify-center">
                 <NButton v-if="loading" type="warning" @click="handleStop">
                   <template #icon>
