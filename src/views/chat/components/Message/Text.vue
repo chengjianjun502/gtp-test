@@ -13,6 +13,7 @@ interface Props {
   error?: boolean
   text?: string
   loading?: boolean
+  chatType: string
   asRawText?: boolean
 }
 
@@ -53,8 +54,12 @@ const wrapClass = computed(() => {
 
 const text = computed(() => {
   const value = props.text ?? ''
+  // 如果是人机回答，并且绘图窗口则为地址添加图片标签
+  if (!props.inversion && props.chatType === 'GAINES')
+    return `<image src="${value}" style="width:400px" />`
   if (!props.asRawText)
     return mdi.render(value)
+
   return value
 })
 
