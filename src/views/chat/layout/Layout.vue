@@ -18,7 +18,9 @@ const { isMobile } = useBasicLayout()
 
 const collapsed = computed(() => appStore.siderCollapsed)
 
-const needPermission = computed(() => !!authStore.session?.auth && !authStore.token)
+const needPermission = computed(
+  () => !!authStore.session?.auth && !authStore.token,
+)
 
 const getMobileClass = computed(() => {
   if (isMobile.value)
@@ -27,10 +29,7 @@ const getMobileClass = computed(() => {
 })
 
 const getContainerClass = computed(() => {
-  return [
-    'h-full',
-    { 'pl-[260px]': !isMobile.value && !collapsed.value },
-  ]
+  return ['h-full', { 'pl-[260px]': !isMobile.value && !collapsed.value }]
 })
 </script>
 
@@ -41,7 +40,9 @@ const getContainerClass = computed(() => {
         <Sider />
         <NLayoutContent class="h-full">
           <RouterView v-slot="{ Component, route }">
-            <component :is="Component" :key="route.fullPath" />
+            <keep-alive>
+              <component :is="Component" :key="route.fullPath" />
+            </keep-alive>
           </RouterView>
         </NLayoutContent>
       </NLayout>

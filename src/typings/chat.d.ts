@@ -7,6 +7,7 @@ declare namespace Chat {
 		error?: boolean
 		loading?: boolean
 		conversationOptions?: ConversationRequest | null
+		chatType: string,
 		requestOptions: { prompt: string; options?: ConversationRequest | null }
 	}
 
@@ -14,6 +15,7 @@ declare namespace Chat {
 		title: string
 		isEdit: boolean
 		uuid: number
+		type?: string
 	}
 
 	interface ChatState {

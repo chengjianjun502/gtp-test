@@ -12,6 +12,7 @@ import { copyToClip } from '@/utils/copy'
 interface Props {
   dateTime?: string
   text?: string
+  chatType: string
   inversion?: boolean
   error?: boolean
   loading?: boolean
@@ -37,6 +38,8 @@ const textRef = ref<HTMLElement>()
 const asRawText = ref(props.inversion)
 
 const messageRef = ref<HTMLElement>()
+
+const chartType = ref(props.chatType)
 
 const options = computed(() => {
   const common = [
@@ -117,6 +120,7 @@ async function handleCopy() {
           :inversion="inversion"
           :error="error"
           :text="text"
+          :chat-type="chartType"
           :loading="loading"
           :as-raw-text="asRawText"
         />
